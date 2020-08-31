@@ -43,6 +43,10 @@ class Login extends Component {
       .then((resJson) => {
         this.setState({isLoading: false});
         this.navigateToNextScreen(resJson);
+      })
+      .catch((err) => {
+        this.setState({isLoading: false});
+        alert('Network request failed');
       });
   };
 
@@ -70,6 +74,9 @@ class Login extends Component {
           resJson.near_earth_objects[randomIndex].id;
         this.setState({aestroidId: id}, () => {
           this.fetchAPI();
+        }).catch((err) => {
+          this.setState({isLoading: false});
+          alert('Network request failed');
         });
       });
   };
