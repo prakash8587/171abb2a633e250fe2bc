@@ -3,12 +3,13 @@ import {View, TextInput, Text, ActivityIndicator} from 'react-native';
 import {styles} from './LoginStyle';
 import {Container, Button} from 'native-base';
 import {StackActions, NavigationActions} from 'react-navigation';
+import {BASE_URL, API_KEY} from '../../utils/utils';
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      aestroidId: '3542519', //'3542519'
+      aestroidId: null,
       isLoading: false,
     };
   }
@@ -36,10 +37,7 @@ class Login extends Component {
   };
 
   fetchAPI = () => {
-    const url =
-      'https://api.nasa.gov/neo/rest/v1/neo/' +
-      this.state.aestroidId +
-      '?api_key=IgvkdSvxSqWdlFdyQzYRhnQuCWKbaoX27Fvs2GzR';
+    const url = `${BASE_URL}${this.state.aestroidId}?api_key=${API_KEY}`;
     fetch(url, {method: 'GET'})
       .then((res) => res.json())
       .then((resJson) => {
@@ -55,6 +53,25 @@ class Login extends Component {
         <Text style={styles.loaderText}>Fetching Details</Text>
       </View>
     );
+  };
+
+  onRandomAsteroidPressed = () => {
+    this.setState({isLoading: true});
+    const url = `${BASE_URL}browse?api_key=${API_KEY}`;
+    fetch(url, {method: 'GET'})
+      .then((res) => res.json())
+      .then((resJson) => {
+        const length =
+          resJson.near_earth_objects && resJson.near_earth_objects.length;
+        const randomIndex = Math.floor(Math.random() * length);
+        const id =
+          resJson.near_earth_objects &&
+          resJson.near_earth_objects[randomIndex] &&
+          resJson.near_earth_objects[randomIndex].id;
+        this.setState({aestroidId: id}, () => {
+          this.fetchAPI();
+        });
+      });
   };
 
   state = {};
@@ -78,6 +95,11 @@ class Login extends Component {
               style={styles.loginButton}
               disabled={!aestroidId}
               onPress={this.onButtonPresed}>
+              <Text style={styles.loginButtonText}>Submit</Text>
+            </Button>
+            <Button
+              style={styles.loginButton}
+              onPress={this.onRandomAsteroidPressed}>
               <Text style={styles.loginButtonText}>Random Asteroid</Text>
             </Button>
           </>

@@ -6,7 +6,8 @@ import {Container, Card} from 'native-base';
 class Dashboard extends Component {
   renderRowView = (title, value, index) => {
     return (
-      <View style={styles.renderView}>
+      <View
+        style={[styles.renderView, index === 0 && styles.renderBorderStyle]}>
         <Text style={styles.renderTitleText}>{title}</Text>
         <Text style={styles.renderValueText}>{value}</Text>
       </View>

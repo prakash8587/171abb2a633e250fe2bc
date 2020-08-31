@@ -14,8 +14,10 @@ export const styles = StyleSheet.create({
     borderBottomColor: '#000',
     height: 80,
     alignItems: 'center',
-    borderTopWidth: index === 0 ? 1 : 0,
     borderTopColor: '#000',
+  },
+  renderBorderStyle: {
+    borderTopWidth: 1,
   },
   renderTitleText: {width: '60%', fontSize: 17, fontWeight: 'bold'},
   renderValueText: {width: '40%', fontSize: 14, color: '#404040'},
